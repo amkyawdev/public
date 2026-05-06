@@ -105,7 +105,7 @@ socialcircle_currentUser လက်ရှိ login ဝင်ထားသူ၏ se
 
 📁 Project Structure (ပရောဂျက်ဖွဲ့စည်းပုံ)
 
-ဤအက်ပ်သည် single HTML file (all-in-one) ဖြစ်သော်လည်း အပိုင်းများခွဲထားသည်-
+ဤအက်ပ်သည် single HTML file (all-in-one) ဖြစ်သော်လည်း လက်တွေ့တည်ဆောက်လျှင်အပိုင်းများခွဲထားသည်-
 
 ```
 SocialChatApp/
