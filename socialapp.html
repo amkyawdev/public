@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SocialCircle - Blue & Gray Harmony</title>
+    <!-- Bootstrap 5 Icons + CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        /* ---------- GLOBAL STYLES : BLUE & GRAY THEME ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #EFF3F6;  /* cool gray background */
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* App container - mobile-first card */
+        .app-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            height: 100vh;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* ---------- HEADER (Blue accent) ---------- */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            background: #FFFFFF;
+            border-bottom: 1px solid #E2E8F0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(0px);
+        }
+        .app-header h4 {
+            color: #1E2A47; /* deep blue-gray */
+            font-weight: 600;
+            letter-spacing: -0.2px;
+        }
+        .hamburger-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.8rem;
+            color: #1E5AF7; /* vibrant blue */
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 0;
+            line-height: 1;
+        }
+        .hamburger-btn:hover {
+            color: #0B3FCC;
+        }
+
+        /* ---------- SIDEBAR MENU (Gray scale + blue hover) ---------- */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1050;
+            display: none;
+            justify-content: flex-start;
+        }
+        .menu-sidebar {
+            width: 280px;
+            background: #FFFFFF;
+            height: 100%;
+            padding: 2rem 1.2rem;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.2s ease;
+            border-right: 1px solid #E9EEF3;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        .menu-sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+        .menu-sidebar li {
+            margin: 1.4rem 0;
+        }
+        .menu-sidebar a {
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #2C3E4E;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 14px;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .menu-sidebar a i {
+            font-size: 1.3rem;
+            color: #5F7F9E;
+        }
+        .menu-sidebar a:hover {
+            background: #F0F4F9;
+            color: #1E5AF7;
+        }
+        .menu-sidebar a:hover i {
+            color: #1E5AF7;
+        }
+
+        /* ---------- PAGES & CARDS ---------- */
+        .page {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            padding: 1.2rem;
+            overflow-y: auto;
+            background: #F8FAFE;
+        }
+        .active-page {
+            display: flex;
+        }
+
+        /* Post & chat cards (white + gray borders) */
+        .post-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            border: 1px solid #E9EDF2;
+            transition: 0.1s;
+        }
+        .chat-message {
+            background: #F0F4F9;
+            border-radius: 22px;
+            padding: 10px 16px;
+            margin-bottom: 12px;
+            max-width: 85%;
+            color: #1F2A3E;
+            border: 1px solid #E2E8F0;
+        }
+        .chat-message.me {
+            background: #1E5AF7;
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+            border: none;
+        }
+        .chat-message.me small {
+            color: #CFE2FF;
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px 0;
+            gap: 6px;
+        }
+        .chat-input-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            background: white;
+            padding: 8px 0;
+        }
+        /* Buttons & forms */
+        .btn-primary {
+            background-color: #1E5AF7;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-weight: 500;
+        }
+        .btn-primary:hover {
+            background-color: #0F48CC;
+        }
+        .btn-outline-secondary {
+            border-color: #CBD5E1;
+            color: #2C3E4E;
+        }
+        .btn-outline-secondary:hover {
+            background-color: #F1F5F9;
+            border-color: #94A3B8;
+        }
+        input, textarea {
+            border-radius: 30px !important;
+            border: 1px solid #D1D9E8 !important;
+            background: #FFFFFF;
+            padding: 10px 16px;
+        }
+        input:focus, textarea:focus {
+            border-color: #1E5AF7 !important;
+            box-shadow: 0 0 0 3px rgba(30, 90, 247, 0.2);
+        }
+        .profile-avatar {
+            width: 85px;
+            height: 85px;
+            background: #EFF3F8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #1E5AF7;
+            border: 2px solid #1E5AF7;
+        }
+        .badge-json, .badge-gray {
+            background: #EFF3F8;
+            color: #2D3E50;
+        }
+        pre {
+            background: #F1F5F9;
+            padding: 12px;
+            border-radius: 18px;
+            font-size: 12px;
+            border-left: 4px solid #1E5AF7;
+        }
+        footer {
+            font-size: 0.7rem;
+            color: #6C86A3;
+        }
+        hr {
+            background-color: #E2E8F0;
+        }
+        .text-accent {
+            color: #1E5AF7;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container" id="appRoot">
+
+    <!-- Header with hamburger menu (Blue/Gray style) -->
+    <div class="app-header">
+        <button class="hamburger-btn" id="menuToggleBtn"><i class="bi bi-list"></i></button>
+        <h4 id="headerTitle">SocialCircle</h4>
+        <div style="width: 28px;"></div>
+    </div>
+
+    <!-- ========================= PAGES ========================= -->
+    <!-- 1. GET STARTED PAGE -->
+    <div id="getStartedPage" class="page">
+        <div class="d-flex flex-column align-items-center justify-content-center h-100 text-center p-4">
+            <div class="bg-light p-3 rounded-circle mb-3" style="background:#EFF3F8 !important;">
+                <i class="bi bi-people-fill" style="font-size: 3.5rem; color: #1E5AF7;"></i>
+            </div>
+            <h2 class="mt-2" style="color:#1E2A47;">Welcome to SocialCircle</h2>
+            <p class="text-secondary px-3">Connect, share public posts & chat in real-time. Powered by JSON system.</p>
+            <button id="startBtn" class="btn btn-primary btn-lg rounded-pill px-5 mt-3 shadow-sm">Get Started <i class="bi bi-arrow-right-circle"></i></button>
+        </div>
+    </div>
+
+    <!-- 2. AUTH PAGE (JSON auto system) -->
+    <div id="authPage" class="page">
+        <div class="p-3 mt-2">
+            <div class="text-center mb-3">
+                <i class="bi bi-shield-lock fs-1" style="color:#1E5AF7;"></i>
+                <h5 class="mt-2">Sign in to your account</h5>
+                <p class="small text-secondary">JSON user store • demo: alice/123 or bob/123</p>
+            </div>
+            <div id="authAlert" class="alert alert-warning d-none"></div>
+            <input type="text" id="authUsername" class="form-control mb-3" placeholder="Username" autocomplete="off">
+            <input type="password" id="authPassword" class="form-control mb-3" placeholder="Password">
+            <div class="d-flex gap-3 mt-2">
+                <button id="loginBtn" class="btn btn-primary flex-fill">Login</button>
+                <button id="signupBtn" class="btn btn-outline-secondary flex-fill">Sign Up</button>
+            </div>
+            <hr class="my-4">
+            <div class="small text-center text-muted">✨ All data stored in localStorage (JSON schema)</div>
+        </div>
+    </div>
+
+    <!-- 3. MAIN PAGE (Home Feed) -->
+    <div id="mainPage" class="page">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0"><i class="bi bi-house-heart-fill text-accent"></i> Main Feed</h5>
+            <button id="newPostBtnMain" class="btn btn-sm btn-primary rounded-pill px-3"><i class="bi bi-plus-lg"></i> New Post</button>
+        </div>
+        <div id="postsContainer" style="flex:1; overflow-y: auto; padding-right: 2px;"></div>
+    </div>
+
+    <!-- 4. PUBLIC POST PAGE -->
+    <div id="publicPostPage" class="page">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0"><i class="bi bi-globe-americas text-accent"></i> Public Posts</h5>
+            <button id="publicNewPostBtn" class="btn btn-sm btn-primary rounded-pill"><i class="bi bi-pencil-square"></i> Create</button>
+        </div>
+        <div id="publicPostsContainer" style="overflow-y: auto; flex:1;"></div>
+    </div>
+
+    <!-- 5. PUBLIC CHAT PAGE -->
+    <div id="publicChatPage" class="page d-flex flex-column">
+        <div class="d-flex align-items-center gap-2 mb-2 pb-1 border-bottom border-light">
+            <i class="bi bi-chat-dots-fill fs-5 text-accent"></i>
+            <span class="fw-semibold">Global Chat Room • live JSON</span>
+            <span class="badge bg-light text-dark ms-2"><i class="bi bi-person"></i> Public</span>
+        </div>
+        <div id="chatMessagesList" class="chat-container" style="flex:1; background: #FFFFFF; border-radius: 28px; padding: 12px 10px;"></div>
+        <div class="chat-input-group">
+            <input type="text" id="chatInput" class="form-control" placeholder="Type a message...">
+            <button id="sendChatBtn" class="btn btn-primary rounded-pill px-4"><i class="bi bi-send-fill"></i></button>
+        </div>
+    </div>
+
+    <!-- 6. USER INFO PAGE (JSON System) -->
+    <div id="userInfoPage" class="page">
+        <div class="text-center mb-4">
+            <div class="profile-avatar mx-auto d-flex align-items-center justify-content-center" id="userAvatarIcon">
+                <i class="bi bi-person-fill fs-1"></i>
+            </div>
+            <h4 class="mt-3 fw-bold" id="profileUsername">username</h4>
+            <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill"><i class="bi bi-patch-check-fill"></i> Member</span>
+        </div>
+        <div class="card border-0 shadow-sm p-3 mb-3 bg-white rounded-4">
+            <h6><i class="bi bi-database-fill text-accent"></i> User JSON Profile</h6>
+            <pre id="userJsonPreview" style="background:#F8FAFE;" class="p-2 rounded-3 overflow-auto"></pre>
+            <button id="editProfileBtn" class="btn btn-outline-primary btn-sm rounded-pill mt-2"><i class="bi bi-pencil"></i> Edit Bio</button>
+        </div>
+        <div class="alert alert-light border rounded-4 small">
+            <i class="bi bi-info-circle-fill text-accent"></i> Data persistence via localStorage — complete JSON system (users, posts, messages).
+        </div>
+    </div>
+
+    <!-- 🌟 Hamburger Menu Overlay (Gray/Blue harmony) -->
+    <div id="menuOverlay" class="menu-overlay">
+        <div class="menu-sidebar">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="text-accent"><i class="bi bi-grid-3x3-gap-fill"></i> Menu</h5>
+                <button id="closeMenuBtn" class="btn-close"></button>
+            </div>
+            <ul>
+                <li><a href="#" data-nav="main"><i class="bi bi-house-door"></i> Main Feed</a></li>
+                <li><a href="#" data-nav="publicPost"><i class="bi bi-newspaper"></i> Public Posts</a></li>
+                <li><a href="#" data-nav="publicChat"><i class="bi bi-chat"></i> Public Chat</a></li>
+                <li><a href="#" data-nav="userInfo"><i class="bi bi-person-badge"></i> My Profile</a></li>
+                <li><a href="#" id="logoutMenuItem"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            </ul>
+            <hr class="my-3">
+            <div class="small text-secondary px-2"><i class="bi bi-database"></i> JSON SYSTEM • Blue & Gray</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ======================= PROJECT STRUCTURE : DATA LAYER (JSON) =======================
+    // 1. Data Stores (mimicking JSON database)
+    let usersDB = [];        // { id, username, password, bio }
+    let postsDB = [];        // { id, userId, username, content, timestamp }
+    let chatMessages = [];   // { id, username, text, timestamp }
+    let currentUser = null;  
+
+    // ---------- Helper: localStorage JSON I/O ----------
+    function loadData() {
+        const storedUsers = localStorage.getItem("socialcircle_users");
+        const storedPosts = localStorage.getItem("socialcircle_posts");
+        const storedChat = localStorage.getItem("socialcircle_chat");
+        usersDB = storedUsers ? JSON.parse(storedUsers) : [];
+        postsDB = storedPosts ? JSON.parse(storedPosts) : [];
+        chatMessages = storedChat ? JSON.parse(storedChat) : [];
+
+        // Seed demo data if empty (blue/gray demo accounts)
+        if(usersDB.length === 0) {
+            usersDB = [
+                { id: "u1", username: "alice", password: "123", bio: "Exploring the world 🌍 | Blue lover" },
+                { id: "u2", username: "bob", password: "123", bio: "Gray coder & designer 🎨" }
+            ];
+            saveUsers();
+        }
+        if(postsDB.length === 0 && usersDB.length) {
+            postsDB = [
+                { id: "p1", userId: "u1", username: "alice", content: "Just joined SocialCircle — loving the blue & gray theme! 💙", timestamp: Date.now() - 7200000 },
+                { id: "p2", userId: "u2", username: "bob", content: "JSON powered system is smooth. Let's connect!", timestamp: Date.now() - 3600000 }
+            ];
+            savePosts();
+        }
+        if(chatMessages.length === 0) {
+            chatMessages = [
+                { id: "c1", username: "alice", text: "Hello everyone! Welcome to the Gray & Blue chat room.", timestamp: Date.now() - 5400000 },
+                { id: "c2", username: "bob", text: "Glad to be here. JSON storage works like a charm.", timestamp: Date.now() - 2700000 }
+            ];
+            saveChat();
+        }
+    }
+    function saveUsers() { localStorage.setItem("socialcircle_users", JSON.stringify(usersDB)); }
+    function savePosts() { localStorage.setItem("socialcircle_posts", JSON.stringify(postsDB)); }
+    function saveChat() { localStorage.setItem("socialcircle_chat", JSON.stringify(chatMessages)); }
+
+    // ---------- Render functions (UI update) ----------
+    function renderMainFeed() {
+        const container = document.getElementById("postsContainer");
+        if(!container) return;
+        if(postsDB.length === 0) { container.innerHTML = `<div class="text-muted text-center p-4">✨ No posts yet. Create one!</div>`; return; }
+        const sorted = [...postsDB].sort((a,b)=>b.timestamp - a.timestamp);
+        container.innerHTML = sorted.map(post => `
+            <div class="post-card">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <i class="bi bi-person-circle fs-5" style="color:#1E5AF7;"></i>
+                    <strong>${escapeHtml(post.username)}</strong>
+                    <small class="text-secondary ms-auto">${new Date(post.timestamp).toLocaleString()}</small>
+                </div>
+                <p class="mb-0">${escapeHtml(post.content)}</p>
+            </div>
+        `).join('');
+    }
+
+    function renderPublicPosts() {
+        const container = document.getElementById("publicPostsContainer");
+        if(!container) return;
+        const sorted = [...postsDB].sort((a,b)=>b.timestamp - a.timestamp);
+        container.innerHTML = sorted.map(post => `
+            <div class="post-card">
+                <div class="d-flex gap-2 align-items-center">
+                    <i class="bi bi-globe2 text-accent"></i>
+                    <span><strong>${escapeHtml(post.username)}</strong> · <span class="text-secondary small">${new Date(post.timestamp).toLocaleString()}</span></span>
+                </div>
+                <p class="mt-2 mb-0">${escapeHtml(post.content)}</p>
+            </div>
+        `).join('');
+    }
+
+    function renderChatMessages() {
+        const chatDiv = document.getElementById("chatMessagesList");
+        if(!chatDiv) return;
+        chatDiv.innerHTML = chatMessages.map(msg => `
+            <div class="chat-message ${currentUser && msg.username === currentUser.username ? 'me' : ''}">
+                <div><strong>${escapeHtml(msg.username)}</strong> <small class="${msg.username === currentUser?.username ? 'text-white-50' : 'text-secondary'}">${new Date(msg.timestamp).toLocaleTimeString()}</small></div>
+                <div class="mt-1">${escapeHtml(msg.text)}</div>
+            </div>
+        `).join('');
+        chatDiv.scrollTop = chatDiv.scrollHeight;
+    }
+
+    function renderUserInfo() {
+        if(!currentUser) return;
+        const userFull = usersDB.find(u => u.id === currentUser.id);
+        const displayJson = {
+            id: userFull.id,
+            username: userFull.username,
+            bio: userFull.bio || "No bio yet",
+            password: "••••••",
+            storage: "localStorage (JSON)"
+        };
+        document.getElementById("userJsonPreview").innerText = JSON.stringify(displayJson, null, 2);
+        document.getElementById("profileUsername").innerText = userFull.username;
+        // optional avatar icon style
+        const avatarDiv = document.getElementById("userAvatarIcon");
+        if(avatarDiv) avatarDiv.innerHTML = `<i class="bi bi-person-circle fs-1"></i>`;
+    }
+
+    function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    // Navigation + menu logic
+    const pagesList = ["getStartedPage","authPage","mainPage","publicPostPage","publicChatPage","userInfoPage"];
+    function showPage(pageId){
+        pagesList.forEach(pid => {
+            const el = document.getElementById(pid);
+            if(el) el.classList.remove("active-page");
+        });
+        const activeEl = document.getElementById(pageId);
+        if(activeEl) activeEl.classList.add("active-page");
+        const headerMap = { mainPage:"Main Feed", publicPostPage:"Public Posts", publicChatPage:"Global Chat", userInfoPage:"My Profile", getStartedPage:"Get Started", authPage:"Sign In" };
+        document.getElementById("headerTitle").innerText = headerMap[pageId] || "SocialCircle";
+        closeMenu();
+        // refresh content if necessary
+        if(pageId === "mainPage") renderMainFeed();
+        if(pageId === "publicPostPage") renderPublicPosts();
+        if(pageId === "publicChatPage") renderChatMessages();
+        if(pageId === "userInfoPage") renderUserInfo();
+    }
+
+    function closeMenu() { document.getElementById("menuOverlay").style.display = "none"; }
+    function openMenu() { document.getElementById("menuOverlay").style.display = "flex"; }
+
+    // Authentication methods
+    function handleLogin(username, password) {
+        const user = usersDB.find(u => u.username === username && u.password === password);
+        if(user){
+            currentUser = { id: user.id, username: user.username, bio: user.bio };
+            localStorage.setItem("socialcircle_currentUser", JSON.stringify({ id: user.id, username: user.username }));
+            showPage("mainPage");
+            renderMainFeed(); renderPublicPosts(); renderChatMessages(); renderUserInfo();
+            return true;
+        } else {
+            const alertBox = document.getElementById("authAlert");
+            alertBox.innerText = "❌ Invalid username or password. Use alice/123 or bob/123";
+            alertBox.classList.remove("d-none");
+            setTimeout(()=> alertBox.classList.add("d-none"), 2500);
+            return false;
+        }
+    }
+    function handleSignup(username, password){
+        if(!username.trim() || !password.trim()) { alert("Username and password required"); return false; }
+        if(usersDB.find(u=> u.username === username)){ alert("Username already exists"); return false; }
+        const newId = "u"+Date.now();
+        const newUser = { id: newId, username: username, password: password, bio: "Hey! I'm new here 💙" };
+        usersDB.push(newUser);
+        saveUsers();
+        handleLogin(username, password);
+        return true;
+    }
+    function logout(){
+        currentUser = null;
+        localStorage.removeItem("socialcircle_currentUser");
+        showPage("getStartedPage");
+        document.getElementById("authUsername").value = "";
+        document.getElementById("authPassword").value = "";
+    }
+
+    // create post (global)
+    function createPost(content){
+        if(!currentUser) { alert("Please login first"); return; }
+        if(!content.trim()) return;
+        const newPost = {
+            id: "p"+Date.now()+"_"+Math.random(),
+            userId: currentUser.id,
+            username: currentUser.username,
+            content: content.trim(),
+            timestamp: Date.now()
+        };
+        postsDB.unshift(newPost);
+        savePosts();
+        if(document.getElementById("mainPage").classList.contains("active-page")) renderMainFeed();
+        if(document.getElementById("publicPostPage").classList.contains("active-page")) renderPublicPosts();
+    }
+    function sendChatMessage(text){
+        if(!currentUser) { alert("Login to join chat"); return; }
+        if(!text.trim()) return;
+        const newMsg = {
+            id: "msg"+Date.now()+Math.random(),
+            username: currentUser.username,
+            text: text.trim(),
+            timestamp: Date.now()
+        };
+        chatMessages.push(newMsg);
+        saveChat();
+        renderChatMessages();
+        document.getElementById("chatInput").value = "";
+    }
+    function editUserBio(){
+        if(!currentUser) return;
+        const userIndex = usersDB.findIndex(u => u.id === currentUser.id);
+        if(userIndex === -1) return;
+        const newBio = prompt("Edit your bio (JSON user info):", usersDB[userIndex].bio || "");
+        if(newBio !== null){
+            usersDB[userIndex].bio = newBio;
+            currentUser.bio = newBio;
+            saveUsers();
+            renderUserInfo();
+        }
+    }
+
+    // session restore
+    function initSession(){
+        const stored = localStorage.getItem("socialcircle_currentUser");
+        if(stored){
+            try {
+                const sess = JSON.parse(stored);
+                const full = usersDB.find(u=> u.id === sess.id);
+                if(full){
+                    currentUser = { id: full.id, username: full.username, bio: full.bio };
+                    showPage("mainPage");
+                    return true;
+                } else { logout(); showPage("getStartedPage"); return false; }
+            } catch(e){ logout(); showPage("getStartedPage"); return false; }
+        } else {
+            showPage("getStartedPage");
+        }
+        return false;
+    }
+
+    //  ========== Event Binding ==========
+    function bindEvents(){
+        document.getElementById("startBtn")?.addEventListener("click", ()=> showPage("authPage"));
+        document.getElementById("loginBtn")?.addEventListener("click", ()=>{
+            handleLogin(document.getElementById("authUsername").value, document.getElementById("authPassword").value);
+        });
+        document.getElementById("signupBtn")?.addEventListener("click", ()=>{
+            handleSignup(document.getElementById("authUsername").value, document.getElementById("authPassword").value);
+        });
+        document.getElementById("newPostBtnMain")?.addEventListener("click", ()=>{
+            let content = prompt("Share your thoughts with the community...");
+            if(content) createPost(content);
+        });
+        document.getElementById("publicNewPostBtn")?.addEventListener("click", ()=>{
+            let content = prompt("Create a new public post:");
+            if(content) createPost(content);
+        });
+        document.getElementById("sendChatBtn")?.addEventListener("click", ()=>{
+            sendChatMessage(document.getElementById("chatInput").value);
+        });
+        document.getElementById("chatInput")?.addEventListener("keypress", (e)=>{
+            if(e.key === "Enter") sendChatMessage(e.target.value);
+        });
+        document.getElementById("editProfileBtn")?.addEventListener("click", ()=> editUserBio());
+        document.getElementById("menuToggleBtn")?.addEventListener("click", openMenu);
+        document.getElementById("closeMenuBtn")?.addEventListener("click", closeMenu);
+        document.getElementById("logoutMenuItem")?.addEventListener("click", (e)=>{
+            e.preventDefault(); logout(); closeMenu();
+        });
+        document.querySelectorAll("[data-nav]").forEach(link=>{
+            link.addEventListener("click", (e)=>{
+                e.preventDefault();
+                const target = link.getAttribute("data-nav");
+                if(target === "main") showPage("mainPage");
+                if(target === "publicPost") showPage("publicPostPage");
+                if(target === "publicChat") showPage("publicChatPage");
+                if(target === "userInfo") showPage("userInfoPage");
+                closeMenu();
+            });
+        });
+        document.getElementById("menuOverlay")?.addEventListener("click", (e)=>{
+            if(e.target === document.getElementById("menuOverlay")) closeMenu();
+        });
+    }
+
+    // Bootstrap load
+    loadData();
+    bindEvents();
+    initSession();
+    renderMainFeed(); renderPublicPosts(); renderChatMessages(); renderUserInfo();
+</script>
+</body>
+</html>
